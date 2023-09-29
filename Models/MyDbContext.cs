@@ -18,12 +18,11 @@ public class MyDbContext : DbContext
             .Metadata.AddCheckConstraint(
                 name: "CK_TestEntity_TestEnum2",
                 sql: CrateCheckSql("SubStatus"));
+
+
     }
     
-    private static string CrateCheckSql(string columnName) => @$"
-  (Status = 'Status1' AND {columnName} IN ({ToSqlList<Status1_SubStatus>()}) OR
- Status = 'Status2' AND {columnName} IN ({ToSqlList<Status2_SubStatus>()})))
-";
+    private static string CrateCheckSql(string columnName) => $"(Status = 'Status1' AND {columnName} IN ({ToSqlList<Status1_SubStatus>()}) OR Status = 'Status2' AND {columnName} IN ({ToSqlList<Status2_SubStatus>()})))";
     
     private static string ToSqlList<TEnum>() where TEnum : struct
     {
